@@ -1,0 +1,4 @@
+name: CustomItems-2.0
+version: ${project.version}
+main: dev.sqyyy.customitems.ii.Main
+api-version: 1.16
