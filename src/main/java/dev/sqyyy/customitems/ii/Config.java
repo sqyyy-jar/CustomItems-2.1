@@ -5,8 +5,8 @@ import org.bukkit.NamespacedKey;
 public enum Config {
     INSTANCE;
 
-    private final NamespacedKey key = new NamespacedKey(Main.getPlugin(Main.class), "custom_items");
-    public NamespacedKey getCustomItemsKey() {
-        return key;
+    private final NamespacedKey keyStorage = new NamespacedKey(Main.getPlugin(Main.class), "key");
+    public NamespacedKey getKeyStorage() {
+        return keyStorage;
     }
 }
