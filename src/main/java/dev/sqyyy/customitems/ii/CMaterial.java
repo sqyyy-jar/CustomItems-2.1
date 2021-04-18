@@ -19,14 +19,14 @@ public class CMaterial {
     private static final Map<String, CMaterial> MATERIALS = new HashMap<>();
 
     private final String key;
-    private final Material m;
+    private final Material material;
     private final String displayname;
     private int customModelData = -1;
     private AbstractAttributeModifier modifier;
 
     public CMaterial(@NotNull String key, @NotNull Material material, @Nullable String displayname) {
         this.key = key.toUpperCase();
-        this.m = material;
+        this.material = material;
         this.displayname = displayname == null ? "§rnull" : ChatColor.translateAlternateColorCodes('&', "&r" + displayname);
         this.modifier = new AbstractAttributeModifier() {};
     }
@@ -77,11 +77,11 @@ public class CMaterial {
         return MATERIALS.values();
     }
 
-    public void setCustomModelData(int customModelData) {
+    public final void setCustomModelData(int customModelData) {
         this.customModelData = customModelData;
     }
 
-    public int getCustomModelData() {
+    public final int getCustomModelData() {
         return customModelData;
     }
 
@@ -102,6 +102,6 @@ public class CMaterial {
     }
 
     public final Material toBukkit() {
-        return this.m;
+        return this.material;
     }
 }
