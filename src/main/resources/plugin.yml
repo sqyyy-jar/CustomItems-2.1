@@ -1,4 +1,8 @@
-name: CustomItems-2.0
+name: CustomItems-2.1
 version: ${project.version}
 main: dev.sqyyy.customitems.ii.Main
 api-version: 1.16
+commands:
+  customitems:
+    usage: /<command>
+    description: Alias -> /ci
