@@ -51,7 +51,7 @@ public class CItemStack {
         }
     }
 
-    public ItemStack toBukkit() {
+    public final ItemStack toBukkit() {
         return bukkit;
     }
 
