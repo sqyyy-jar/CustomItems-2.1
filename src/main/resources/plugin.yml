@@ -6,3 +6,6 @@ commands:
   customitems:
     usage: /<command>
     description: Alias -> /ci
+    aliases:
+      - ci
+    permission: ci.kit.gui
