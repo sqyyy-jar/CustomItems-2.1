@@ -42,13 +42,15 @@ public class GuiManager {
         home[13] = new ItemBuilder(new ItemStack(Material.BARRIER)).setDisplayName("&c&lClose").build();
         home[15] = new ItemBuilder(new ItemStack(Material.COMPARATOR)).setDisplayName("&6&lSettings").build();
 
-        settings[];
+        settings[18] = new ItemBuilder(new ItemStack(Material.BARRIER)).setDisplayName("&cClose").build();
+        settings[19] = new ItemBuilder(new ItemStack(Material.RED_STAINED_GLASS_PANE)).setDisplayName("&cBack").build();
 
         updateList();
     }
 
     private void updateList() {
-
+        itemList[18] = new ItemBuilder(new ItemStack(Material.BARRIER)).setDisplayName("&cClose").build();
+        itemList[19] = new ItemBuilder(new ItemStack(Material.RED_STAINED_GLASS_PANE)).setDisplayName("&cBack").build();
     }
 
     public void join(HumanEntity p) {
