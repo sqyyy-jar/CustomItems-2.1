@@ -1,6 +1,7 @@
 package dev.sqyyy.customitems.ii.gui.listeners;
 
 import dev.sqyyy.customitems.ii.Main;
+import dev.sqyyy.customitems.ii.exceptions.NoCustomItemError;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
@@ -54,6 +55,14 @@ public class InventoryClickListener implements Listener {
                         break;
                     case 19:
                         Main.getPlugin().getGuiManager().openHome(e.getWhoClicked());
+                        break;
+                    case 22:
+                        try {
+                            Main.getPlugin().getGuiManager().updateList();
+                        } catch (NoCustomItemError noCustomItemError) {
+                            System.out.println("Could not update!");
+                        }
+                        Main.getPlugin().getGuiManager().openItemList(e.getWhoClicked(), Main.getPlugin().getGuiManager().getPage(e.getWhoClicked()));
                         break;
                     case 25:
                         Main.getPlugin().getGuiManager().openItemList(e.getWhoClicked(), Main.getPlugin().getGuiManager().getPage(e.getWhoClicked()) - 1);
