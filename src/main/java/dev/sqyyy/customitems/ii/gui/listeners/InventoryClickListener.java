@@ -1,6 +1,7 @@
 package dev.sqyyy.customitems.ii.gui.listeners;
 
 import dev.sqyyy.customitems.ii.Main;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
@@ -18,9 +19,24 @@ public class InventoryClickListener implements Listener {
         || e.getAction() == InventoryAction.SWAP_WITH_CURSOR) {
             return;
         }
-        switch (Main.getPlugin().getGuiManager().getGui(e.getWhoClicked().getUniqueId()).toUpperCase()) {
+        if (e.getCurrentItem() == null) return;
+        if (e.getClickedInventory() != e.getView().getTopInventory()) return;
+        guiId: switch (Main.getPlugin().getGuiManager().getGui(e.getWhoClicked().getUniqueId()).toUpperCase()) {
             case "HOME":
-
+                switch (e.getCurrentItem().getType()) {
+                    case BARRIER:
+                        e.getWhoClicked().closeInventory();
+                        Main.getPlugin().getGuiManager().close(e.getWhoClicked());
+                        break guiId;
+                    case BARREL:
+                        Main.getPlugin().getGuiManager().openItemlist(e.getWhoClicked());
+                        break;
+                    case COMPARATOR:
+                        Main.getPlugin().getGuiManager().openSettings(e.getWhoClicked());
+                        break;
+                }
+                break;
+            case "SETTINGS":
                 break;
         }
     }
