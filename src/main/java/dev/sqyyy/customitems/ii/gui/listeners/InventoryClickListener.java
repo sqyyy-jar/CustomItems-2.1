@@ -56,7 +56,7 @@ public class InventoryClickListener implements Listener {
                         Main.getPlugin().getGuiManager().openHome(e.getWhoClicked());
                         break;
                     default:
-
+                        Main.getPlugin().getGuiManager().itemListClick(e.getWhoClicked(), e.getSlot(), e.isRightClick());
                 }
                 break;
         }
