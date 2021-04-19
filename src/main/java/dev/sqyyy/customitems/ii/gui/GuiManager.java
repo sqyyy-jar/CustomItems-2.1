@@ -2,12 +2,12 @@ package dev.sqyyy.customitems.ii.gui;
 
 import dev.sqyyy.customitems.ii.Main;
 import dev.sqyyy.customitems.ii.gui.commands.CustomItemsCommand;
-import dev.sqyyy.customitems.ii.gui.listeners.InventoryClickListener;
-import dev.sqyyy.customitems.ii.gui.listeners.InventoryCloseListener;
-import dev.sqyyy.customitems.ii.gui.listeners.PlayerJoinQuitListener;
+import dev.sqyyy.customitems.ii.gui.listeners.*;
+import dev.sqyyy.customitems.ii.util.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Server;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,6 +20,8 @@ public class GuiManager {
     private final Server se;
 
     private final ItemStack[] home = new ItemStack[27];
+    private final ItemStack[] settings = new ItemStack[27];
+    private final ItemStack[] itemList = new ItemStack[27];
 
     public GuiManager() {
         this.pl = Main.getPlugin();
@@ -33,20 +35,27 @@ public class GuiManager {
         se.getPluginManager().registerEvents(new InventoryCloseListener(), pl);
         se.getPluginManager().registerEvents(new PlayerJoinQuitListener(), pl);
         pl.getCommand("customitems").setExecutor(new CustomItemsCommand());
-        pl.getCommand("customitems").setAliases(Collections.singletonList("ci"));
     }
 
     private void loadContents() {
-        home[11] = new ItemStack(Material.BARREL);
-        home[13] = new ItemStack(Material.BARRIER);
-        home[15] = new ItemStack(Material.COMPARATOR);
+        home[11] = new ItemBuilder(new ItemStack(Material.BARREL)).setDisplayName("&b&lAll items").build();
+        home[13] = new ItemBuilder(new ItemStack(Material.BARRIER)).setDisplayName("&c&lClose").build();
+        home[15] = new ItemBuilder(new ItemStack(Material.COMPARATOR)).setDisplayName("&6&lSettings").build();
+
+        settings[];
+
+        updateList();
     }
 
-    public void join(Player p) {
+    private void updateList() {
+
+    }
+
+    public void join(HumanEntity p) {
         this.keys.put(p.getUniqueId(), "NONE");
     }
 
-    public void quit(Player p) {
+    public void quit(HumanEntity p) {
         if (!this.keys.get(p.getUniqueId()).equalsIgnoreCase("NONE")) {
             p.closeInventory();
         }
@@ -57,13 +66,27 @@ public class GuiManager {
         return keys.get(uuid);
     }
 
-    public void open(Player p) {
-        keys.put(p.getUniqueId(), "HOME");
+    public void open(HumanEntity p) {
         p.openInventory(Bukkit.createInventory(null, 27, "§6CustomItems"));
+        openHome(p);
+    }
+
+    public void openSettings(HumanEntity p) {
+        keys.put(p.getUniqueId(), "SETTINGS");
+        p.getOpenInventory().getTopInventory().setContents(settings);
+    }
+
+    public void openItemlist(HumanEntity p) {
+        keys.put(p.getUniqueId(), "ITEM_LIST");
+        p.getOpenInventory().getTopInventory().setContents(itemList);
+    }
+
+    public void openHome(HumanEntity p) {
+        keys.put(p.getUniqueId(), "HOME");
         p.getOpenInventory().getTopInventory().setContents(home);
     }
 
-    public void close(Player p) {
+    public void close(HumanEntity p) {
         keys.put(p.getUniqueId(), "NONE");
     }
 }
