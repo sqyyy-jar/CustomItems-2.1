@@ -11,7 +11,8 @@ public class CItemStack {
     private final ItemStack bukkit;
     private final CMaterial material;
 
-    public CItemStack(CMaterial m) {
+    public CItemStack(CMaterial m) throws NoCustomItemError {
+        if (!CMaterial.isRegistered(m)) throw new NoCustomItemError(m.name());
         this.bukkit = new ItemStack(m.toBukkit());
         this.material = m;
         init();
