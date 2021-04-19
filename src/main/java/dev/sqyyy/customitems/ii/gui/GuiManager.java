@@ -18,6 +18,7 @@ import java.util.*;
 
 public class GuiManager {
     private final Map<UUID, String> keys;
+    private final Map<UUID, Integer> pages;
     private final JavaPlugin pl;
     private final Server se;
 
@@ -30,6 +31,7 @@ public class GuiManager {
         this.pl = Main.getPlugin();
         this.se = pl.getServer();
         this.keys = new HashMap<>();
+        this.pages = new HashMap<>();
         loadContents();
         for (Player p : Bukkit.getOnlinePlayers()) {
             join(p);
@@ -72,6 +74,7 @@ public class GuiManager {
 
     public void join(HumanEntity p) {
         this.keys.put(p.getUniqueId(), "NONE");
+        this.pages.put(p.getUniqueId(), 1);
     }
 
     public void quit(HumanEntity p) {
@@ -79,6 +82,18 @@ public class GuiManager {
             p.closeInventory();
         }
         this.keys.remove(p);
+    }
+
+    public void itemListClick(HumanEntity p, int slot, boolean rightclick) {
+        if (rightclick) {
+            p.sendMessage("§cRightclick not working yet.");
+        } else {
+            if (p.getInventory().firstEmpty() == -1) {
+                p.sendMessage("§cYou have no space in your inventory!");
+            } else {
+                p.getInventory().addItem(this.materialMap.get(pages.get(p.getUniqueId()))[slot]);
+            }
+        }
     }
 
     public String getGui(UUID uuid) {
@@ -98,6 +113,7 @@ public class GuiManager {
     public void openItemList(HumanEntity p, int page) {
         if (this.materialMap.containsKey(page)) {
             keys.put(p.getUniqueId(), "ITEM_LIST");
+            pages.put(p.getUniqueId(), page);
             p.getOpenInventory().getTopInventory().setContents(getItemList(page));
         }
     }
