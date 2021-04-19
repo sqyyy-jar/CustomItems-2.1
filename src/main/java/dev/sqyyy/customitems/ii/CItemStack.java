@@ -2,10 +2,14 @@ package dev.sqyyy.customitems.ii;
 
 import dev.sqyyy.customitems.ii.exceptions.KeyNotFoundError;
 import dev.sqyyy.customitems.ii.exceptions.NoCustomItemError;
+import dev.sqyyy.customitems.ii.exceptions.NotStackableError;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+
+import java.util.UUID;
 
 public class CItemStack {
     private final ItemStack bukkit;
@@ -18,14 +22,15 @@ public class CItemStack {
         init();
     }
 
-    public CItemStack(ItemStack itemStack) throws NoCustomItemError, KeyNotFoundError {
+    public CItemStack(ItemStack itemStack) throws NoCustomItemError, KeyNotFoundError, NotStackableError {
         this(itemStack, false);
     }
 
-    public CItemStack(ItemStack itemStack, boolean update) throws NoCustomItemError, KeyNotFoundError {
+    public CItemStack(ItemStack itemStack, boolean update) throws NoCustomItemError, KeyNotFoundError, NotStackableError {
         if (isCustom(itemStack, true)) {
             this.bukkit = itemStack;
             this.material = CMaterial.getMaterial(itemStack);
+            if (!this.material.isStackable() && bukkit.getAmount() > 1) throw new NotStackableError(this.material.name());
             if (update) update();
         } else {
             throw new NoCustomItemError(itemStack.getType().name());
@@ -59,6 +64,9 @@ public class CItemStack {
     private final void init() {
         ItemMeta meta = this.bukkit.getItemMeta();
         meta.setDisplayName(this.material.getDisplayname());
+        if (!this.material.isStackable()) {
+            meta.getPersistentDataContainer().set(Config.INSTANCE.getUniqueStorage(), PersistentDataType.STRING, UUID.randomUUID().toString());
+        }
         PersistentDataContainer container = meta.getPersistentDataContainer();
         container.set(Config.INSTANCE.getKeyStorage(), PersistentDataType.STRING, this.material.name());
         if (this.material.getCustomModelData() != -1) meta.setCustomModelData(this.material.getCustomModelData());
