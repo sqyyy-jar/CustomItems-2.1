@@ -23,12 +23,14 @@ public class CMaterial {
     private final String displayname;
     private int customModelData = -1;
     private AbstractAttributeModifier modifier;
+    private final boolean stackable;
 
-    public CMaterial(@NotNull String key, @NotNull Material material, @Nullable String displayname) {
+    public CMaterial(@NotNull String key, @NotNull Material material, @Nullable String displayname, boolean stackable) {
         this.key = key.toUpperCase();
         this.material = material;
         this.displayname = displayname == null ? "§rnull" : ChatColor.translateAlternateColorCodes('&', "&r" + displayname);
         this.modifier = new AbstractAttributeModifier() {};
+        this.stackable = stackable;
     }
 
     public static CMaterial getMaterial(String key) throws KeyNotFoundError {
@@ -103,5 +105,9 @@ public class CMaterial {
 
     public final Material toBukkit() {
         return this.material;
+    }
+
+    public final boolean isStackable() {
+        return stackable;
     }
 }
