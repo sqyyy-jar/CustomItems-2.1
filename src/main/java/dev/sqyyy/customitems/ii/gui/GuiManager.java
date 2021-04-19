@@ -3,6 +3,7 @@ package dev.sqyyy.customitems.ii.gui;
 import dev.sqyyy.customitems.ii.CItemStack;
 import dev.sqyyy.customitems.ii.CMaterial;
 import dev.sqyyy.customitems.ii.Main;
+import dev.sqyyy.customitems.ii.exceptions.KeyNotFoundError;
 import dev.sqyyy.customitems.ii.exceptions.NoCustomItemError;
 import dev.sqyyy.customitems.ii.gui.commands.CustomItemsCommand;
 import dev.sqyyy.customitems.ii.gui.listeners.*;
@@ -95,7 +96,13 @@ public class GuiManager {
             if (p.getInventory().firstEmpty() == -1) {
                 p.sendMessage("§cYou have no space in your inventory!");
             } else {
-                p.getInventory().addItem(this.materialMap.get(pages.get(p.getUniqueId()))[slot]);
+                try {
+                    p.getInventory().addItem(new CItemStack(CMaterial.getMaterial(this.materialMap.get(pages.get(p.getUniqueId()))[slot])).toBukkit());
+                } catch (NoCustomItemError noCustomItemError) {
+                    noCustomItemError.printStackTrace();
+                } catch (KeyNotFoundError keyNotFoundError) {
+                    p.sendMessage("§cThere was an error while giving you the item.");
+                }
             }
         }
     }
