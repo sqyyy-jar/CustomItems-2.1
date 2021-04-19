@@ -9,6 +9,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 public class InventoryCloseListener implements Listener {
     @EventHandler
     public void onClose(InventoryCloseEvent e) {
-        Main.getPlugin().getGuiManager().close((Player) e.getPlayer());
+        Main.getPlugin().getGuiManager().close(e.getPlayer());
     }
 }
