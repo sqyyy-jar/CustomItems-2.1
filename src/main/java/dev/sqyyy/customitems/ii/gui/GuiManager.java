@@ -3,6 +3,7 @@ package dev.sqyyy.customitems.ii.gui;
 import dev.sqyyy.customitems.ii.CItemStack;
 import dev.sqyyy.customitems.ii.CMaterial;
 import dev.sqyyy.customitems.ii.Main;
+import dev.sqyyy.customitems.ii.exceptions.NoCustomItemError;
 import dev.sqyyy.customitems.ii.gui.commands.CustomItemsCommand;
 import dev.sqyyy.customitems.ii.gui.listeners.*;
 import dev.sqyyy.customitems.ii.util.ItemBuilder;
@@ -27,7 +28,7 @@ public class GuiManager {
     private final ItemStack[] settings = new ItemStack[27];
     private final ItemStack[] itemList = new ItemStack[27];
 
-    public GuiManager() {
+    public GuiManager() throws NoCustomItemError {
         this.pl = Main.getPlugin();
         this.se = pl.getServer();
         this.keys = new HashMap<>();
@@ -42,7 +43,7 @@ public class GuiManager {
         pl.getCommand("customitems").setExecutor(new CustomItemsCommand());
     }
 
-    private void loadContents() {
+    private void loadContents() throws NoCustomItemError {
         home[11] = new ItemBuilder(new ItemStack(Material.BARREL)).setDisplayName("&b&lAll items").build();
         home[13] = new ItemBuilder(new ItemStack(Material.BARRIER)).setDisplayName("&c&lClose").build();
         home[15] = new ItemBuilder(new ItemStack(Material.COMPARATOR)).setDisplayName("&6&lSettings").build();
@@ -53,9 +54,10 @@ public class GuiManager {
         updateList();
     }
 
-    private void updateList() {
+    public void updateList() throws NoCustomItemError {
         itemList[18] = new ItemBuilder(new ItemStack(Material.BARRIER)).setDisplayName("&cClose").build();
         itemList[19] = new ItemBuilder(new ItemStack(Material.RED_STAINED_GLASS_PANE)).setDisplayName("&cBack").build();
+        itemList[22] = new ItemBuilder(new ItemStack(Material.GREEN_STAINED_GLASS_PANE)).setDisplayName("&cRefresh").build();
         itemList[25] = new ItemBuilder(new ItemStack(Material.ARROW)).setDisplayName("&cBack").build();
         itemList[26] = new ItemBuilder(new ItemStack(Material.ARROW)).setDisplayName("&cFor").build();
 
