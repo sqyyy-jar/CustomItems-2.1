@@ -1,5 +1,7 @@
 package dev.sqyyy.customitems.ii.gui;
 
+import dev.sqyyy.customitems.ii.CItemStack;
+import dev.sqyyy.customitems.ii.CMaterial;
 import dev.sqyyy.customitems.ii.Main;
 import dev.sqyyy.customitems.ii.gui.commands.CustomItemsCommand;
 import dev.sqyyy.customitems.ii.gui.listeners.*;
@@ -19,6 +21,7 @@ public class GuiManager {
     private final JavaPlugin pl;
     private final Server se;
 
+    private final Map<Integer, ItemStack[]> materialMap = new HashMap<>();
     private final ItemStack[] home = new ItemStack[27];
     private final ItemStack[] settings = new ItemStack[27];
     private final ItemStack[] itemList = new ItemStack[27];
@@ -51,6 +54,20 @@ public class GuiManager {
     private void updateList() {
         itemList[18] = new ItemBuilder(new ItemStack(Material.BARRIER)).setDisplayName("&cClose").build();
         itemList[19] = new ItemBuilder(new ItemStack(Material.RED_STAINED_GLASS_PANE)).setDisplayName("&cBack").build();
+
+        this.materialMap.put(1, itemList.clone());
+
+        int page = 0;
+        int i = 0;
+        for (int i1 = 0; i1 < CMaterial.values().size(); i1++) {
+            if (((double) i) % 18 == 0) {
+                page++;
+                i = 0;
+            }
+            if (!this.materialMap.containsKey(page)) this.materialMap.put(page, this.itemList.clone());
+            this.materialMap.get(page)[i] = new CItemStack(CMaterial.values().toArray(new CMaterial[CMaterial.values().size()])[i1]).toBukkit();
+            i++;
+        }
     }
 
     public void join(HumanEntity p) {
@@ -78,9 +95,15 @@ public class GuiManager {
         p.getOpenInventory().getTopInventory().setContents(settings);
     }
 
-    public void openItemlist(HumanEntity p) {
-        keys.put(p.getUniqueId(), "ITEM_LIST");
-        p.getOpenInventory().getTopInventory().setContents(itemList);
+    public void openItemList(HumanEntity p, int page) {
+        if (this.materialMap.containsKey(page)) {
+            keys.put(p.getUniqueId(), "ITEM_LIST");
+            p.getOpenInventory().getTopInventory().setContents(getItemList(page));
+        }
+    }
+
+    private ItemStack[] getItemList(int page) {
+        return this.materialMap.get(page);
     }
 
     public void openHome(HumanEntity p) {
