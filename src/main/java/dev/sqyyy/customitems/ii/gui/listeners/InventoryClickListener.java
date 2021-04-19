@@ -21,13 +21,13 @@ public class InventoryClickListener implements Listener {
         }
         if (e.getCurrentItem() == null) return;
         if (e.getClickedInventory() != e.getView().getTopInventory()) return;
-        guiId: switch (Main.getPlugin().getGuiManager().getGui(e.getWhoClicked().getUniqueId()).toUpperCase()) {
+        switch (Main.getPlugin().getGuiManager().getGui(e.getWhoClicked().getUniqueId()).toUpperCase()) {
             case "HOME":
                 switch (e.getCurrentItem().getType()) {
                     case BARRIER:
                         e.getWhoClicked().closeInventory();
                         Main.getPlugin().getGuiManager().close(e.getWhoClicked());
-                        break guiId;
+                        break;
                     case BARREL:
                         Main.getPlugin().getGuiManager().openItemlist(e.getWhoClicked());
                         break;
@@ -37,6 +37,26 @@ public class InventoryClickListener implements Listener {
                 }
                 break;
             case "SETTINGS":
+                switch (e.getCurrentItem().getType()) {
+                    case BARRIER:
+                        e.getWhoClicked().closeInventory();
+                        Main.getPlugin().getGuiManager().close(e.getWhoClicked());
+                        break;
+                    case RED_STAINED_GLASS_PANE:
+                        Main.getPlugin().getGuiManager().openHome(e.getWhoClicked());
+                        break;
+                }
+                break;
+            case "ITEM_LIST":
+                switch (e.getSlot()) {
+                    case 18:
+                        e.getWhoClicked().closeInventory();
+                        Main.getPlugin().getGuiManager().close(e.getWhoClicked());
+                        break;
+                    case 19:
+                        Main.getPlugin().getGuiManager().openHome(e.getWhoClicked());
+                        break;
+                }
                 break;
         }
     }
