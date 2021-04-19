@@ -1,5 +1,6 @@
 package dev.sqyyy.customitems.ii;
 
+import dev.sqyyy.customitems.ii.exceptions.NoCustomItemError;
 import dev.sqyyy.customitems.ii.gui.GuiManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -12,7 +13,11 @@ public final class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         pl = this;
-        this.guiManager = new GuiManager();
+        try {
+            this.guiManager = new GuiManager();
+        } catch (NoCustomItemError noCustomItemError) {
+            System.out.println("Could not load GuiManager!");
+        }
     }
 
     @Override
