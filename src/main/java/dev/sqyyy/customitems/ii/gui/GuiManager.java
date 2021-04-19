@@ -56,6 +56,8 @@ public class GuiManager {
     private void updateList() {
         itemList[18] = new ItemBuilder(new ItemStack(Material.BARRIER)).setDisplayName("&cClose").build();
         itemList[19] = new ItemBuilder(new ItemStack(Material.RED_STAINED_GLASS_PANE)).setDisplayName("&cBack").build();
+        itemList[25] = new ItemBuilder(new ItemStack(Material.ARROW)).setDisplayName("&cBack").build();
+        itemList[26] = new ItemBuilder(new ItemStack(Material.ARROW)).setDisplayName("&cFor").build();
 
         this.materialMap.put(1, itemList.clone());
 
@@ -94,6 +96,10 @@ public class GuiManager {
                 p.getInventory().addItem(this.materialMap.get(pages.get(p.getUniqueId()))[slot]);
             }
         }
+    }
+
+    public int getPage(HumanEntity p) {
+        return pages.get(p.getUniqueId());
     }
 
     public String getGui(UUID uuid) {
