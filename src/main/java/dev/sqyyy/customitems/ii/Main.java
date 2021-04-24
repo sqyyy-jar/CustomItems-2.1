@@ -12,11 +12,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public final class Main extends JavaPlugin {
     private static Main pl;
     private GuiManager guiManager;
+    private List<CMaterialData> saves = new ArrayList<>();
 
     @Override
     public void onEnable() {
@@ -38,9 +41,12 @@ public final class Main extends JavaPlugin {
                         && items.getString(s + ".name") != null
                         && items.getString(s + ".material") != null) {
                     try {
-                        CMaterial m = new CMaterial(items.getString(s + ".key"), Material.valueOf(
-                                items.getString(s + ".material").toUpperCase()),
-                                items.getString(s + ".name"), items.getBoolean(s + ".stackable"));
+                        String key = s;
+                        Material material = Material.valueOf(items.getString(s + ".material"));
+                        boolean stackable = items.getBoolean(s + ".stackable");
+                        String name = items.getString(s + ".name");
+                        CMaterial m = new CMaterial(s, material, name, stackable);
+                        CMaterialData d = new CMaterialData(s, material, name, stackable);
                         try {
                             CMaterial.register(m);
                         } catch (AlreadyRegisteredError alreadyRegisteredError) {
